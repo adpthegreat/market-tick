@@ -13,7 +13,7 @@ Upstream's `market-tick-abi` crate is vendored unmodified in
 
 ## Why a sub-slot clock
 
-Solana's `Clock` sysvar moves once per slot (~400 ms). Every transaction in a
+Solana's `Clock` sysvar moves once per slot (~200 ms). Every transaction in a
 slot sees the same time.
 
 That matters for proprietary AMMs (propAMMs), which quote from prices their
