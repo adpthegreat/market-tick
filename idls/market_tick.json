@@ -1,26 +1,59 @@
 {
-  "address": "tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N",
-  "metadata": {
-    "name": "market_tick",
-    "version": "0.1.0",
-    "spec": "0.1.0",
-    "description": "Sub-slot market tick Solana program",
-    "repository": "https://github.com/firedancer-io/market-tick"
-  },
+  "version": "0.1.0",
+  "name": "market_tick",
   "instructions": [
     {
-      "name": "increment",
-      "discriminator": [
-        1
+      "name": "Initialize",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "Funds the account"
+          ]
+        },
+        {
+          "name": "pda",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Canonical V1 PDA [\"market_tick\", \"v1\"]"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "System program"
+          ]
+        }
       ],
+      "args": [],
+      "discriminant": {
+        "type": "u8",
+        "value": 0
+      }
+    },
+    {
+      "name": "Increment",
       "accounts": [
         {
           "name": "pda",
-          "writable": true
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Canonical V1 PDA [\"market_tick\", \"v1\"]"
+          ]
         },
         {
           "name": "signer",
-          "signer": true
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "Ticker; the first valid signer in a slot owns it"
+          ]
         }
       ],
       "args": [
@@ -29,78 +62,65 @@
           "type": "u64"
         },
         {
-          "name": "timestamp_ns",
+          "name": "timestampNs",
           "type": "i64"
         },
         {
-          "name": "target_market_tick_interval_ns",
+          "name": "targetMarketTickIntervalNs",
           "type": "u64"
         }
-      ]
-    },
-    {
-      "name": "initialize",
-      "discriminator": [
-        0
       ],
-      "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "pda",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  109,
-                  97,
-                  114,
-                  107,
-                  101,
-                  116,
-                  95,
-                  116,
-                  105,
-                  99,
-                  107
-                ]
-              },
-              {
-                "kind": "const",
-                "value": [
-                  118,
-                  49
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "system_program",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
+      "discriminant": {
+        "type": "u8",
+        "value": 1
+      }
     }
   ],
   "accounts": [
     {
-      "name": "MarketTickV1Account",
-      "discriminator": [
-        77,
-        82,
-        75,
-        84,
-        75,
-        86,
-        48,
-        49
-      ]
+      "name": "MarketTickV1",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "discriminator",
+            "type": {
+              "array": [
+                "u8",
+                8
+              ]
+            }
+          },
+          {
+            "name": "signer",
+            "type": "publicKey"
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          },
+          {
+            "name": "firstTimestampNs",
+            "type": "i64"
+          },
+          {
+            "name": "timestampNs",
+            "type": "i64"
+          },
+          {
+            "name": "sequence",
+            "type": "u64"
+          },
+          {
+            "name": "targetMarketTickIntervalNs",
+            "type": "u64"
+          },
+          {
+            "name": "observedMarketTickIntervalNs",
+            "type": "u64"
+          }
+        ]
+      }
     }
   ],
   "errors": [
@@ -140,48 +160,8 @@
       "msg": "Target interval must be nonzero"
     }
   ],
-  "types": [
-    {
-      "name": "MarketTickV1Account",
-      "docs": [
-        "Fixed-layout V1 Market Tick account."
-      ],
-      "serialization": {
-        "custom": "market-tick-v1"
-      },
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "signer",
-            "type": "pubkey"
-          },
-          {
-            "name": "slot",
-            "type": "u64"
-          },
-          {
-            "name": "first_timestamp_ns",
-            "type": "i64"
-          },
-          {
-            "name": "timestamp_ns",
-            "type": "i64"
-          },
-          {
-            "name": "sequence",
-            "type": "u64"
-          },
-          {
-            "name": "target_market_tick_interval_ns",
-            "type": "u64"
-          },
-          {
-            "name": "observed_market_tick_interval_ns",
-            "type": "u64"
-          }
-        ]
-      }
-    }
-  ]
+  "metadata": {
+    "origin": "shank",
+    "address": "DHEk6e7M37FXE7g8bThazZ3PuaR87MABb1TFJzWiREAD"
+  }
 }

@@ -11,12 +11,15 @@ crate-type = ["cdylib", "lib"]
 
 [features]
 no-entrypoint = []
+idl = ["dep:shank", "dep:thiserror"]
 
 [dependencies]
 market-tick-abi = { workspace = true }
 pinocchio = { workspace = true }
 pinocchio-pubkey = { workspace = true }
 pinocchio-system = { workspace = true }
+shank = { workspace = true, optional = true }
+thiserror = { workspace = true, optional = true }
 
 [dev-dependencies]
 litesvm = { workspace = true }

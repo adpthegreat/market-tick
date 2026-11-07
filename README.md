@@ -5,11 +5,11 @@ A [Pinocchio](https://github.com/anza-xyz/pinocchio) port of
 (`af3ea0a`), a Solana program that keeps a sub-slot clock which increments at a
 regular interval throughout a slot.
 
-The on-chain ABI is unchanged: program ID, PDA, seeds, the 88-byte V1 account
-layout, instruction tags and data, account order, and the custom error numbers
-`6000..=6006`. Upstream's `market-tick-abi` crate is vendored unmodified in
-`crates/market-tick-abi`, and `idls/market_tick.json` still describes the
-program.
+The PDA seeds, the 88-byte V1 account layout, instruction tags and data,
+account order, and the custom error numbers `6000..=6006` match upstream.
+Upstream's `market-tick-abi` crate is vendored unmodified in
+`crates/market-tick-abi`. `idls/market_tick.json` is generated with Shank from
+`programs/market-tick/src/idl.rs`.
 
 ## Why a sub-slot clock
 
@@ -121,6 +121,7 @@ Where the savings come from:
 cargo build-sbf --manifest-path programs/market-tick/Cargo.toml   # target/deploy/market_tick.so
 
 cargo test --workspace                                            # unit, ABI and LiteSVM tests
+shank idl --crate-root programs/market-tick --out-dir idls         # regenerate idls/market_tick.json
 cargo test -p market-tick --test litesvm -- --nocapture           # print the comparison table
 
 rustup component add miri --toolchain nightly
@@ -151,6 +152,10 @@ They also cast the account in place and apply increments.
 | 64 | 8 | sequence | u64 |
 | 72 | 8 | target_market_tick_interval_ns | u64 |
 | 80 | 8 | observed_market_tick_interval_ns | u64 |
+
+Program ID `DHEk6e7M37FXE7g8bThazZ3PuaR87MABb1TFJzWiREAD`. The V1 PDA is
+`CGdiAQSwWMQfXGTXCzdqpY6s8hL3pVMqd5gj2BuFst2m`, from seeds
+`[b"market_tick", b"v1"]` with bump 254.
 
 ## Instructions
 

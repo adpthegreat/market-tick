@@ -7,7 +7,7 @@
 
 #![allow(clippy::result_large_err)]
 
-use std::path::PathBuf;
+use std::{cell::Cell, path::PathBuf};
 
 use litesvm::{types::TransactionResult, LiteSVM};
 use market_tick_abi::{error_code, MarketTickV1, PDA_SEED_MARKET_TICK, PDA_SEED_VERSION_V1};
@@ -35,8 +35,16 @@ fn anchor_so() -> PathBuf {
     manifest_dir().join("tests/fixtures/market_tick_anchor.so")
 }
 
+/// Upstream's program ID, compiled into the Anchor fixture.
+const ANCHOR_PROGRAM_ID: Address =
+    Address::from_str_const("tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N");
+
+thread_local! {
+    static PROGRAM_ID: Cell<Address> = const { Cell::new(Address::new_from_array(market_tick::ID)) };
+}
+
 fn program_id() -> Address {
-    Address::from(market_tick::ID)
+    PROGRAM_ID.with(Cell::get)
 }
 
 fn pda() -> Address {
@@ -188,7 +196,8 @@ struct Costs {
 }
 
 /// Port of upstream `programs/market-tick/tests/integration.rs`.
-fn scenario(so: PathBuf) -> (Costs, Vec<MarketTickV1>) {
+fn scenario(so: PathBuf, program: Address) -> (Costs, Vec<MarketTickV1>) {
+    PROGRAM_ID.with(|id| id.set(program));
     let mut costs = Costs::default();
     let mut states = Vec::new();
 
@@ -390,8 +399,8 @@ fn scenario(so: PathBuf) -> (Costs, Vec<MarketTickV1>) {
 
 #[test]
 fn pinocchio_matches_anchor_and_is_cheaper() {
-    let (pinocchio, pinocchio_states) = scenario(pinocchio_so());
-    let (anchor, anchor_states) = scenario(anchor_so());
+    let (pinocchio, pinocchio_states) = scenario(pinocchio_so(), Address::from(market_tick::ID));
+    let (anchor, anchor_states) = scenario(anchor_so(), ANCHOR_PROGRAM_ID);
 
     let normalize = |states: Vec<MarketTickV1>| {
         states

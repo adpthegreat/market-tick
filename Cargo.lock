@@ -111,6 +111,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.104"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
+
+[[package]]
 name = "ark-bn254"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1545,6 +1551,7 @@ dependencies = [
  "pinocchio",
  "pinocchio-pubkey",
  "pinocchio-system",
+ "shank",
  "solana-account",
  "solana-address 2.7.0",
  "solana-instruction 3.5.1",
@@ -1555,6 +1562,7 @@ dependencies = [
  "solana-system-interface",
  "solana-transaction",
  "solana-transaction-error",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2137,6 +2145,52 @@ checksum = "77fd7028345d415a4034cf8777cd4f8ab1851274233b45f84e3d955502d93874"
 dependencies = [
  "digest 0.10.7",
  "keccak",
+]
+
+[[package]]
+name = "shank"
+version = "0.4.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a04cda38da41ebf155944d3252ac488cccbe82d5c46136f73a6fd997f9b9df3"
+dependencies = [
+ "shank_macro",
+]
+
+[[package]]
+name = "shank_macro"
+version = "0.4.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2675b4d44af1f6268e45ded182d390bf1f3d3a69f64c12ba5e26bf3664f8dca6"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "shank_macro_impl",
+ "shank_render",
+ "syn 2.0.119",
+]
+
+[[package]]
+name = "shank_macro_impl"
+version = "0.4.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "87a88dfd9d830baf555e2b6ed9a7c2deb60fdc84c43b51f855bfdf852eb5d690"
+dependencies = [
+ "anyhow",
+ "proc-macro2",
+ "quote",
+ "serde",
+ "syn 2.0.119",
+]
+
+[[package]]
+name = "shank_render"
+version = "0.4.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c7a2adfa1b9f9a8747f7c1998ac57982a835f8cd641efe06605bde241116d685"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "shank_macro_impl",
 ]
 
 [[package]]

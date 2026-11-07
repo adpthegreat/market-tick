@@ -9,6 +9,8 @@ extern crate std;
 #[cfg(not(feature = "no-entrypoint"))]
 mod entrypoint;
 pub mod error;
+#[cfg(feature = "idl")]
+pub mod idl;
 pub mod instructions;
 pub mod state;
 
@@ -19,11 +21,28 @@ pub use market_tick_abi as abi;
 
 use pinocchio::pubkey::Pubkey;
 
-pinocchio_pubkey::declare_id!("tickUcsEQegChaAuo9VYQQztB4ZGApY6ZT4FkULWY6N");
+pinocchio_pubkey::declare_id!("DHEk6e7M37FXE7g8bThazZ3PuaR87MABb1TFJzWiREAD");
 
 /// Canonical V1 PDA, `find_program_address([b"market_tick", b"v1"], ID)`.
 pub const PDA_V1: Pubkey =
-    pinocchio_pubkey::pubkey!("4cG31VNF9TzFinNc7BmnjhFvGjxkY3sCETVMtMgbrhPs");
+    pinocchio_pubkey::pubkey!("CGdiAQSwWMQfXGTXCzdqpY6s8hL3pVMqd5gj2BuFst2m");
 
 /// Canonical bump of [`PDA_V1`].
-pub const PDA_V1_BUMP: u8 = 255;
+pub const PDA_V1_BUMP: u8 = 254;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use market_tick_abi::{PDA_SEED_MARKET_TICK, PDA_SEED_VERSION_V1};
+    use solana_address::Address;
+
+    #[test]
+    fn pda_constants_match_program_id_and_seeds() {
+        let (address, bump) = Address::find_program_address(
+            &[PDA_SEED_MARKET_TICK, PDA_SEED_VERSION_V1],
+            &Address::from(ID),
+        );
+        assert_eq!(address.to_bytes(), PDA_V1);
+        assert_eq!(bump, PDA_V1_BUMP);
+    }
+}
