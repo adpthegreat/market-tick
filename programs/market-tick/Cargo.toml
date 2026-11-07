@@ -16,6 +16,7 @@ no-entrypoint = []
 market-tick-abi = { workspace = true }
 pinocchio = { workspace = true }
 pinocchio-pubkey = { workspace = true }
+pinocchio-system = { workspace = true }
 
 [dev-dependencies]
 litesvm = { workspace = true }

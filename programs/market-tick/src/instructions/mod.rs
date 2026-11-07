@@ -70,7 +70,7 @@ mod tests {
     use pinocchio::{pubkey::Pubkey, ProgramResult};
     use std::{vec, vec::Vec};
 
-    const SYSTEM: Pubkey = crate::SYSTEM_PROGRAM_ID;
+    const SYSTEM: Pubkey = pinocchio_system::ID;
     const SIGNER: Pubkey = [0x22; 32];
     const PAYER: Pubkey = [0x33; 32];
 

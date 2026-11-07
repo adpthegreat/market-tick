@@ -27,5 +27,3 @@ pub const PDA_V1: Pubkey =
 
 /// Canonical bump of [`PDA_V1`].
 pub const PDA_V1_BUMP: u8 = 255;
-
-pub const SYSTEM_PROGRAM_ID: Pubkey = [0; 32];

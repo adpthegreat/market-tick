@@ -45,10 +45,10 @@ impl InitializeAccounts {
         if !pubkey_eq(pda.key(), &PDA_V1) {
             return Err(ProgramError::InvalidSeeds);
         }
-        if !pubkey_eq(pda.owner(), &crate::SYSTEM_PROGRAM_ID) {
+        if !pubkey_eq(pda.owner(), &pinocchio_system::ID) {
             return Err(ProgramError::AccountAlreadyInitialized);
         }
-        if !pubkey_eq(system_program.key(), &crate::SYSTEM_PROGRAM_ID) {
+        if !pubkey_eq(system_program.key(), &pinocchio_system::ID) {
             return Err(ProgramError::IncorrectProgramId);
         }
 
